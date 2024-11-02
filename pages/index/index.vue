@@ -1,52 +1,50 @@
 <template>
-	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{title}}</text>
+	<view class="homeLayout">
+		<view class="banner">
+			<swiper circular autoplay indicator-dots indicator-color="#c0c0c0" indicator-active-color="#FFF">
+				<swiper-item v-for="item in 3 ">
+					<image src="../../common/images/banner3.jpg" mode="aspectFill"></image>
+				</swiper-item>
+			</swiper>
+		</view>
+		<view class="notice">
+			<view class="left">
+				<uni-icons type="sound" size="30"></uni-icons>
+				<text class="text">公告</text>
+			</view>
+			<view class="center">
+				
+			</view>
+			<view class="right">
+				
+			</view>
 		</view>
 	</view>
 </template>
 
-<script>
-	export default {
-		data() {
-			return {
-				title: 'Hello'
-			}
-		},
-		onLoad() {
-
-		},
-		methods: {
-
-		}
-	}
+<script setup>
 </script>
 
-<style>
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin-top: 200rpx;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 50rpx;
-	}
-
-	.text-area {
-		display: flex;
-		justify-content: center;
-	}
-
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
+<style lang="scss" scoped>
+	.homeLayout {
+		.banner {
+			width: 750rpx;
+			padding: 30rpx 0rpx;
+			swiper {
+				width: 750rpx;
+				height: 340rpx;
+				&-item {
+					width: 100%;
+					height: 100%;
+					padding: 0 30rpx;
+					image {
+						width: 100%;
+						height: 100%;
+						border-radius: 10rpx;
+						
+					}
+				}
+			}
+		}
 	}
 </style>
