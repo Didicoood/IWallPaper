@@ -3,15 +3,51 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "IWallPaper"
+			}
+		},
+		{
+			"path" : "pages/catergory/catergory",
+			"style" : 
+			{
+				"navigationBarTitleText" : "分类"
+			}
+		},
+		{
+			"path" : "pages/user/user",
+			"style" : 
+			{
+				"navigationBarTitleText" : "用户"
 			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarTitleText": "IWallPaper",
+		"navigationBarBackgroundColor": "#fff",
 		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#9799a5",
+		"selectedColor": "#28b389",
+		"list": [
+			{
+				"text": "推荐",
+				"pagePath": "pages/index/index",
+				"iconPath": "static/tabBar/home.png",
+				"selectedIconPath": "static/tabBar/home-h.png"
+			},{
+				"text": "分类",
+				"pagePath": "pages/catergory/catergory",
+				"iconPath": "static/tabBar/classify.png",
+				"selectedIconPath": "static/tabBar/classify-h.png"
+			},{
+				"text": "用户",
+				"pagePath": "pages/user/user",
+				"iconPath": "static/tabBar/user.png",
+				"selectedIconPath": "static/tabBar/user-h.png"
+			}
+		]
 	},
 	"uniIdRouter": {}
 }

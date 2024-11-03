@@ -10,7 +10,7 @@ if (!Math) {
   _easycom_uni_icons();
 }
 const _sfc_main = {
-  __name: "them-item",
+  __name: "theme-item",
   props: {
     isMore: {
       type: Boolean,
@@ -36,5 +36,5 @@ const _sfc_main = {
     };
   }
 };
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-85577552"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-f4eafbca"]]);
 wx.createComponent(Component);

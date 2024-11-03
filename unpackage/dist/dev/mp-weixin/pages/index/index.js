@@ -6,15 +6,15 @@ if (!Array) {
   const _easycom_uni_icons2 = common_vendor.resolveComponent("uni-icons");
   const _easycom_uni_dateformat2 = common_vendor.resolveComponent("uni-dateformat");
   const _easycom_common_titel2 = common_vendor.resolveComponent("common-titel");
-  const _easycom_them_item2 = common_vendor.resolveComponent("them-item");
-  (_easycom_uni_icons2 + _easycom_uni_dateformat2 + _easycom_common_titel2 + _easycom_them_item2)();
+  const _easycom_theme_item2 = common_vendor.resolveComponent("theme-item");
+  (_easycom_uni_icons2 + _easycom_uni_dateformat2 + _easycom_common_titel2 + _easycom_theme_item2)();
 }
 const _easycom_uni_icons = () => "../../uni_modules/uni-icons/components/uni-icons/uni-icons.js";
 const _easycom_uni_dateformat = () => "../../uni_modules/uni-dateformat/components/uni-dateformat/uni-dateformat.js";
 const _easycom_common_titel = () => "../../components/common-titel/common-titel.js";
-const _easycom_them_item = () => "../../components/them-item/them-item.js";
+const _easycom_theme_item = () => "../../components/theme-item/theme-item.js";
 if (!Math) {
-  (_easycom_uni_icons + _easycom_uni_dateformat + _easycom_common_titel + _easycom_them_item)();
+  (_easycom_uni_icons + _easycom_uni_dateformat + _easycom_common_titel + _easycom_theme_item)();
 }
 function _sfc_render(_ctx, _cache) {
   return {
