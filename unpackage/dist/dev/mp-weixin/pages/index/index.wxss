@@ -57,9 +57,12 @@
   align-items: center;
 }
 .homeLayout .notice .left .text.data-v-1cf27b2a {
-  color: #28b389;
+  color: #000;
   font-weight: 600;
   font-size: 28rpx;
+}
+.homeLayout .notice.data-v-1cf27b2a  .uni-icons {
+  color: #28b389 !important;
 }
 .homeLayout .notice .center.data-v-1cf27b2a {
   flex: 1;
@@ -102,8 +105,11 @@
 }
 .homeLayout .select .date.data-v-1cf27b2a {
   display: flex;
-  color: #28b39b;
+  color: #28b389;
   align-items: center;
+}
+.homeLayout .select .date.data-v-1cf27b2a  .uni-icons {
+  color: #28b389 !important;
 }
 .homeLayout .select .date .text.data-v-1cf27b2a {
   margin-left: 5rpx;

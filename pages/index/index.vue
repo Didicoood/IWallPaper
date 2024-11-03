@@ -1,5 +1,5 @@
 <template>
-	<view class="homeLayout">
+	<view class="homeLayout pageBg">
 		<view class="banner">
 			<swiper circular autoplay indicator-dots indicator-color="#c0c0c0" indicator-active-color="#FFF">
 				<swiper-item v-for="item in 3 ">
@@ -9,7 +9,7 @@
 		</view>
 		<view class="notice">
 			<view class="left">
-				<uni-icons type="sound" size="30" color="#28b39b"></uni-icons>
+				<uni-icons type="sound" size="30" color="$brand-theme-color"></uni-icons>
 				<text class="text">公告</text>
 			</view>
 			<view class="center">
@@ -28,7 +28,7 @@
 				<template #name>每日推荐</template>
 				<template #custom>
 					<view class="date">
-						<uni-icons type="calendar" size="18" color="#28b39b"></uni-icons>
+						<uni-icons type="calendar" size="18" color="$brand-theme-color"></uni-icons>
 						<view class="text">
 							<uni-dateformat format="dd号" :date="new Date()"></uni-dateformat>
 						</view>
@@ -97,10 +97,15 @@
 				justify-content: center;
 				align-items: center;
 				.text {
-					color: #28b389;
+					color:$text-font-color-1;
 					font-weight: 600;
 					font-size: 28rpx
 				}
+			}
+			:deep() {
+			.uni-icons {
+				color: $brand-theme-color !important;
+			}
 			}
 			.center {
 				flex: 1;
@@ -144,8 +149,13 @@
 			}
 			.date {
 				display: flex;
-				color: #28b39b;
+				color: $brand-theme-color;
 				align-items: center;
+				:deep() {
+				.uni-icons {
+					color: $brand-theme-color !important;
+				}
+				}
 				.text {
 					margin-left: 5rpx;
 					font-size: 30rpx;

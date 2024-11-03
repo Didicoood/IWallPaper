@@ -1,3 +1,11 @@
 view, swiper, swiper-item {
 	box-sizing: border-box;
 }
+.pageBg {
+	// 渐变排序从前往后压，越上层级越高,逗号隔开
+	background:
+	linear-gradient(to bottom, rgba(0, 0, 0, 0), #fff 400rpx),
+	linear-gradient(to right, #6CB4EE 5%, #F3C4CB);
+	
+	min-height: 80vh;
+}

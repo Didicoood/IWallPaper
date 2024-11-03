@@ -25,7 +25,7 @@ function _sfc_render(_ctx, _cache) {
     c: common_vendor.p({
       type: "sound",
       size: "30",
-      color: "#28b39b"
+      color: "$brand-theme-color"
     }),
     d: common_vendor.f(5, (item, k0, i0) => {
       return {};
@@ -38,7 +38,7 @@ function _sfc_render(_ctx, _cache) {
     f: common_vendor.p({
       type: "calendar",
       size: "18",
-      color: "#28b39b"
+      color: "$brand-theme-color"
     }),
     g: common_vendor.p({
       format: "dd号",
