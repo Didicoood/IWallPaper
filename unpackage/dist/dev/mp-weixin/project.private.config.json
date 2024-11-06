@@ -8,6 +8,13 @@
         "miniprogram": {
             "list": [
                 {
+                    "name": "pages/catergoryList/catergoryList",
+                    "pathName": "pages/catergoryList/catergoryList",
+                    "query": "",
+                    "launchMode": "default",
+                    "scene": null
+                },
+                {
                     "name": "pages/user/user",
                     "pathName": "pages/user/user",
                     "query": "",

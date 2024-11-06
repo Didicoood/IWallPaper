@@ -1,6 +1,6 @@
 <template>
 	<view class="themeItem">
-		<navigator v-if="!isMore" url="" class="box">
+		<navigator v-if="!isMore" url="../../pages/catergoryList/catergoryList" class="box">
 			<image class="pic" src="../../common/images/classify2.jpg" mode="aspectFill"></image>
 			<view class="mask">
 				明星美女
@@ -9,7 +9,7 @@
 				3天前更新
 			</view>
 		</navigator>
-		<navigator v-if="isMore" url="" class="box more">
+		<navigator v-if="isMore" url="../../pages/catergory/catergory" open-type="reLaunch" class="box more">
 			<image class="pic" src="../../common/images/classify2.jpg" mode="aspectFill"></image>
 			<view class="mask">
 				<uni-icons type="more-filled" size="34" color="#fff" ></uni-icons>

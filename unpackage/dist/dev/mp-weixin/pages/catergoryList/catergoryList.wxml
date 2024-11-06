@@ -1,0 +1,1 @@
+<view class="catergoryList data-v-65898d46"><view class="content data-v-65898d46"><navigator wx:for="{{a}}" wx:for-item="item" url="" class="item data-v-65898d46"><image class="data-v-65898d46" src="{{b}}" mode="aspectFill"></image></navigator></view></view>

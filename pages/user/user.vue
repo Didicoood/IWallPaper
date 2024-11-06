@@ -15,7 +15,8 @@
 		<!-- 选项 -->
 		<view class="section">
 			<view class="list">
-				<view class="row">
+				<navigator url="/pages/catergoryList/catergoryList">
+					<view class="row">
 					<view class="left">
 						<uni-icons type="download-filled" size="20"></uni-icons>
 						<view class="text">
@@ -28,10 +29,13 @@
 						</view>
 						<uni-icons type="right" size="15" color="#aaa"></uni-icons>
 					</view>
-				</view>
+					</view>
+				</navigator>
 			</view>
 			<view class="list">
-				<view class="row">
+				<navigator url="/pages/catergoryList/catergoryList" class="">
+					<view class="row">
+						
 					<view class="left">
 						<uni-icons type="star-filled" size="20"></uni-icons>
 						<view class="text">
@@ -44,7 +48,8 @@
 						</view>
 						<uni-icons type="right" size="15" color="#aaa"></uni-icons>
 					</view>
-				</view>
+					</view>
+				</navigator>
 			</view>
 			<view class="list">
 				<view class="row">
