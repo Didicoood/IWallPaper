@@ -1,5 +1,6 @@
 <template>
 	<view class="homeLayout pageBg">
+		<custom-nav-bar title="推荐"></custom-nav-bar>
 		<view class="banner">
 			<swiper circular autoplay indicator-dots indicator-color="#c0c0c0" indicator-active-color="#FFF">
 				<swiper-item v-for="item in 3 ">
@@ -7,7 +8,7 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		<view class="notice">
+		<view class="noticee">
 			<view class="left">
 				<uni-icons type="sound" size="30" color="$brand-theme-color"></uni-icons>
 				<text class="text">公告</text>
@@ -15,7 +16,9 @@
 			<view class="center">
 				<swiper vertical autoplay interval="1500" circular>
 					<swiper-item v-for="item in 5">
+						<navigator url="/pages/notice/detail">
 						XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+						</navigator>
 					</swiper-item>
 				</swiper>
 			</view>
@@ -38,7 +41,9 @@
 			<view class="content">
 				<scroll-view scroll-x >
 					<view class="box" v-for="item in 5">
+						<navigator url="/pages/preview/preview" class="box">
 						<image src="../../common/images/classify1.jpg" mode="aspectFill"></image>
+						</navigator>
 					</view>
 				</scroll-view>
 			</view>
@@ -83,7 +88,7 @@
 				}
 			}
 		}
-		.notice {
+		.noticee {
 			width: 690rpx;
 			height: 80rpx;
 			line-height: 80rpx;
