@@ -1,12 +1,12 @@
 <template>
 	<view class="themeItem">
-		<navigator v-if="!isMore" url="../../pages/catergoryList/catergoryList" class="box">
-			<image class="pic" src="../../common/images/classify2.jpg" mode="aspectFill"></image>
+		<navigator v-if="!isMore" :url="'../../pages/catergoryList/catergoryList?id=' + item._id + '&name=' + item.name" class="box">
+			<image class="pic" :src="item.picurl" mode="aspectFill"></image>
 			<view class="mask">
-				明星美女
+				{{item.name}}
 			</view>
-			<view class="tab">
-				3天前更新
+			<view v-if="compareTime" class="tab">
+				{{compareTime}}前更新 
 			</view>
 		</navigator>
 		<navigator v-if="isMore" url="../../pages/catergory/catergory" open-type="reLaunch" class="box more">
@@ -22,11 +22,28 @@
 </template>
 
 <script setup>
-defineProps({
+	import { computed } from 'vue';
+import {compareTimestamp} from'@/utils/common.js'
+const props = defineProps({
 	isMore:{
 		type:Boolean,
 		default: false
+	},
+	item: {
+		// 对象的默认值要使用函数
+		type:Object,
+		default() {
+			return {
+				name: 'default',
+				picurl: '../../common/images/classify2.jpg',
+				updateTime: Date.now() - 1000*60*60*5
+			}
+		}
 	}
+})
+// 计算时间
+const compareTime = computed(() => {
+	return compareTimestamp(props.item.updateTime)
 })
 </script>
 

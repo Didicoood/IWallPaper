@@ -1,8 +1,8 @@
 <template>
-	<view class="preview">
-		<swiper circular>
-			<swiper-item v-for="item in 10">
-				<image @click="maskChange" src="../../common/images/preview2.jpg" mode="aspectFill"></image>
+	<view class="preview" v-if="currentInfo">
+		<swiper circular :current="currentIndex" @change="handleChangePic">
+			<swiper-item v-for="(item, index) in catergoryList" :key="item._id">
+				<image v-if="readImgs.includes(index)"  @click="maskChange" :src="item.picurl" mode="aspectFill"></image>
 			</swiper-item>
 		</swiper>
 		
@@ -12,7 +12,7 @@
 				<uni-icons type="left" color="#fff" size="20"></uni-icons>
 			</view>
 			<view class="count">
-				3/9
+				{{currentIndex + 1}}/{{catergoryList.length}}
 			</view>
 			<view class="time">
 				<uni-dateformat :date="new Date()" format="hh:mm"></uni-dateformat>
@@ -20,7 +20,7 @@
 			<view class="date">
 				<uni-dateformat :date="new Date()" format="MM月dd日"></uni-dateformat>
 			</view>
-			<view class="footer">
+			<view class="footer" v-if="currentInfo">
 				<view @click="handleClickInfo" class="box">
 					<uni-icons type="info" size="28"></uni-icons>
 					<view class="text">
@@ -30,10 +30,10 @@
 				<view class="box" @click="handleClickRate">
 					<uni-icons type="star" size="28"></uni-icons>
 					<view class="text">
-						5凤
+						{{currentInfo.score}}分
 					</view>
 				</view>
-				<view class="box">
+				<view class="box" @click="handleDownload">
 					<uni-icons type="download" size="28"></uni-icons>
 					<view class="text">
 						下载
@@ -55,27 +55,27 @@
 				</view>
 				</view>
 				<scroll-view scroll-y >
-					<view class="content">
+					<view class="content" v-if="currentInfo">
 						<view class="row" >
 							<view class="label">
 								UUID：
 							</view>
 							<view class="value" selectable>
-								XXXXXXXXXX
+								{{currentInfo._id}}
 							</view>
 						</view><view class="row" >
 							<view class="label">
 								分类：
 							</view>
 							<view class="value catergory" selectable>
-								XXXXXXXXXX
+								{{currentInfo._id}}
 							</view>
 						</view><view class="row" >
 							<view class="label">
 								发布者：
 							</view>
 							<view class="value" selectable>
-								XXXXXXXXXX
+								{{currentInfo.nickname}}
 							</view>
 						</view>
 						<view class="row" >
@@ -83,8 +83,8 @@
 								评分：
 							</view>
 							<view class="value rateBox" >
-								<uni-rate readonly touchable size="16"/>
-								<text class="score">5分</text>
+								<uni-rate readonly :value="currentInfo.score" touchable size="16"/>
+								<text class="score">{{currentInfo.score}}分</text>
 							</view>
 						</view>
 						<view class="row" >
@@ -92,7 +92,7 @@
 								摘要：
 							</view>
 							<view class="value" selectable>
-								XXXXXXXXXX
+								{{currentInfo.description}}
 							</view>
 						</view>
 						<view class="row" >
@@ -100,8 +100,8 @@
 								标签：
 							</text>
 							<view class="value tabs" selectable>
-								<view class="tab" v-for="item in 3">
-									标签名
+								<view class="tab" v-for="item in currentInfo.tabs" :key="item._id">
+									{{item}}
 								</view>
 							</view>
 						</view>
@@ -125,18 +125,18 @@
 			<!-- 空盒子为了平均分布，方便布局 -->
 			<view></view>
 			<view class="title">
-				评分信息
+				{{isScore? '已评分' : '评分信息'}}
 			</view>
 			<view class="close" @click="handleClickRateClose">
 				<uni-icons type="closeempty" size="18" color="#999"></uni-icons>
 			</view>
 			</view>
 			<view class="content">
-				<uni-rate allowHalf v-model="userRate" />
+				<uni-rate :disabled="isScore" allowHalf v-model="userRate" />
 				<text class="text">{{userRate}} 分</text>
 			</view>
 			<view class="footer">
-				<button type="default" size="mini" plain :disabled="!userRate" @click="handleConfirmRate">确认</button>
+				<button type="default" size="mini" plain :disabled="!userRate || isScore" @click="handleConfirmRate">确认</button>
 				<button type="warn" size="mini"  @click="handleClickRateClose">取消</button>
 			</view>
 			</view>
@@ -147,8 +147,16 @@
 <script setup>
 import { ref } from 'vue';
 import {getStatusBarHeight, getLeftIconLeft} from '@/utils/system.js'
+import {onLoad} from '@dcloudio/uni-app'
+import {apiScore, apiWriteDownload} from '@/api/apis.js'
 	// 点击图片隐藏遮罩层
 	const maskState = ref(true)
+	const catergoryList = ref([])
+	const currentId = ref()
+	const currentIndex = ref(0)
+	const readImgs = ref([])
+	const currentInfo = ref()
+	const isScore = ref(false)
 	const maskChange = () => {
 		maskState.value = !maskState.value
 	}
@@ -165,20 +173,141 @@ import {getStatusBarHeight, getLeftIconLeft} from '@/utils/system.js'
 	const userRate = ref()
 	const ratePopup = ref()
 	const handleClickRate = () => {
+		if(currentInfo.value.userScore) {
+			isScore.value = true
+			userRate.value = currentInfo.value.userScore
+		}
 		ratePopup.value.open()
 	}
 	// 关闭评分
 	const handleClickRateClose = () => {
+		isScore.value = false
 		ratePopup.value.close()
 	}
 	// 确认评分
-	const handleConfirmRate = () => {
-		ratePopup.value.close()
+	const handleConfirmRate = async () => {
+		const res = await apiScore({userScore:userRate.value, classid:currentInfo.value.classid, wallId:currentInfo.value._id})
+		if(res.errCode === 0) {
+			uni.showToast({
+				title:'评分成功',
+				icon:'none'
+			})
+		}
+		catergoryList.value[currentIndex.value].userScore = userRate.value
+		// 覆盖原来的catergoryList
+		uni.setStorageSync('storgCatergoryList', catergoryList.value)
+		handleClickRateClose()
 	}
 	// 返回
 	const handleGoBack = () => {
 		uni.navigateBack()
 	}
+	const storgCatergoryList =  uni.getStorageSync('storgCatergoryList') || []
+	catergoryList.value = storgCatergoryList.map(item => {
+		return {
+			...item,
+			picurl: item.smallPicurl.replace('_small.webp', '.jpg')
+		}
+	})
+	const handleChangePic = (e) => {
+		currentIndex.value = e.detail.current
+		// 滑动换图优化
+		readImgsFun()
+		currentInfo.value = catergoryList.value[currentIndex.value]
+	}
+	const readImgsFun = () => {
+		readImgs.value.push(
+		currentIndex.value <=0 ? catergoryList.value.length - 1: currentIndex.value - 1,
+		currentIndex.value,
+		currentIndex.value >= catergoryList.value.length - 1 ? 0 : currentIndex.value + 1
+		)
+		// 数组去重
+		readImgs.value = [...new Set(readImgs.value)]
+	}
+	// 下载
+	const handleDownload = async () => {
+		// #ifdef H5
+		uni.showModal({
+			content:'长按保存',
+			showCancel:false
+		})
+		// #endif
+		// #ifndef H5
+		try{
+			
+		
+		uni.showLoading({
+			title:'下载中',
+			mask: true
+		})
+		// 记录下载
+		const res = await apiWriteDownload({classid:currentInfo.value.classid, wallId:currentInfo.value._id})
+		// 使用trycatch这里就不要使用return了，用throw把错误抛给catch
+		// if(res.errCode != 0) return
+		if(res.errCode != 0) throw res
+		uni.getImageInfo({
+			src:currentInfo.value.picurl,
+			success: (e) => {
+				uni.saveImageToPhotosAlbum({
+					filePath:e.path,
+					success: (e) => {
+						uni.showToast({
+							title:'保存成功',
+							icon:'none'
+						})
+					},
+					fail: (err) => {
+						if(err.errMsg == 'saveImageToPhotosAlbum:fail cancel') {
+							uni.showToast({
+								title:'保存失败',
+								icon:'none'
+							})
+							return
+						}
+						uni.showModal({
+							title: '提示',
+							content:'需要授权保存相册权限',
+							success: (res) => {
+								// 手动开启权限对话框
+								if(res.confirm) {
+									uni.openSetting({
+										success(setting) {
+											if(setting.authSetting['scope.writePhotosAlbum']) {
+												uni.showToast({
+													title: '授权成功',
+													icon:'none'
+												})
+											}else {
+												uni.showToast({
+													title: '授权失败',
+													icon:'none'
+												})
+											}
+										}
+									})
+								}
+							}
+						})
+					},
+					complete() {
+						uni.hideLoading()
+					}
+				})
+			}
+		})
+		}catch(err) {
+			uni.hideLoading()
+		}
+		// #endif
+	}
+	onLoad((e) => {
+		let {id=null} = e
+		currentId.value = id
+		currentIndex.value = catergoryList.value.findIndex(item => item._id === currentId.value)
+		currentInfo.value = catergoryList.value[currentIndex.value]
+		readImgsFun()
+	})
+	
 </script>
 
 <style lang="scss">

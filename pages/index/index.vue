@@ -3,8 +3,8 @@
 		<custom-nav-bar title="推荐"></custom-nav-bar>
 		<view class="banner">
 			<swiper circular autoplay indicator-dots indicator-color="#c0c0c0" indicator-active-color="#FFF">
-				<swiper-item v-for="item in 3 ">
-					<image src="../../common/images/banner3.jpg" mode="aspectFill"></image>
+				<swiper-item v-for="(item, index) in bannerList " :key="item._id">
+					<image :src="item.picurl" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -15,9 +15,9 @@
 			</view>
 			<view class="center">
 				<swiper vertical autoplay interval="1500" circular>
-					<swiper-item v-for="item in 5">
+					<swiper-item v-for="(item, index) in noticeList" :key="item._id">
 						<navigator url="/pages/notice/detail">
-						XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+						即将取代
 						</navigator>
 					</swiper-item>
 				</swiper>
@@ -40,9 +40,9 @@
 			</common-titel>
 			<view class="content">
 				<scroll-view scroll-x >
-					<view class="box" v-for="item in 5">
-						<navigator url="/pages/preview/preview" class="box">
-						<image src="../../common/images/classify1.jpg" mode="aspectFill"></image>
+					<view class="box" v-for="(item, index) in randomList" :key="item.classid">
+						<navigator :url="'/pages/preview/preview?id=' + item._id" class="box">
+						<image :src="item.smallPicurl" mode="aspectFill"></image>
 						</navigator>
 					</view>
 				</scroll-view>
@@ -57,7 +57,7 @@
 			</common-titel>
 			
 			<view class="content">
-				<theme-item v-for="item in 8"></theme-item>
+				<theme-item v-for="(item, index) in catergoryList" :key="item._id" :item="item"></theme-item>
 				<theme-item :isMore="true" ></theme-item>
 			</view>
 		</view>
@@ -65,6 +65,50 @@
 </template>
 
 <script setup>
+	import { onMounted, ref } from 'vue';
+	import {onShareAppMessage,onShareTimeline} from "@dcloudio/uni-app"
+import { apiGetBanner, apiGetDayRandom, apiGetNotice, apiGetCatergory } from '../../api/apis';
+	const randomList = ref([])
+	const bannerList = ref([])
+	const noticeList = ref([])
+	const catergoryList = ref([])
+	// 获取轮播图
+	const getbannerList = async () => {
+		const res = await apiGetBanner()
+		bannerList.value = res.data
+	}
+	// 获取随机
+	const getDayRandom = async () => {
+		const res = await apiGetDayRandom()
+		randomList.value = res.data
+	}
+	// 获取公告列表
+	const getNotice = async () => {
+		const res = await apiGetNotice({select: true})
+		noticeList.value = res.data
+	}
+	// 获取分类
+	const getCatergory = async () => {
+		const res = await apiGetCatergory({select: true})
+		catergoryList.value = res.data
+	}
+	onMounted(() => {
+		getbannerList()
+		getDayRandom()
+		getNotice()
+		getCatergory()
+	})
+	onShareAppMessage((e) => {
+		return {
+			title: 'IWallPaper手机壁纸',
+			path: '/pages/index/index'
+		}
+	})
+	onShareTimeline(() => {
+		return {
+			title: 'IWallPaper手机壁纸',
+		}
+	})
 </script>
 
 <style lang="scss" scoped>

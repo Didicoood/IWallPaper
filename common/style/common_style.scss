@@ -9,3 +9,11 @@ view, swiper, swiper-item {
 	
 	min-height: 80vh;
 }
+.loadingLayout {
+	padding: 30rpx 0;
+}
+
+// 手机安全区
+.safe-area-inset-bottom {
+	height: env(safe-area-inset-bottom);
+}
