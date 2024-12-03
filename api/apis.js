@@ -67,3 +67,13 @@ export function apiWriteDownload (data={}) {
 	})
 }
 
+/**
+ * 壁纸详情
+*/
+export function apiDetailWall (data={}) {
+	return request({
+		url: '/detailWall',
+		data
+	})
+}
+

@@ -1,6 +1,7 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const utils_system = require("../../utils/system.js");
+const utils_common = require("../../utils/common.js");
 const api_apis = require("../../api/apis.js");
 if (!Array) {
   const _easycom_uni_icons2 = common_vendor.resolveComponent("uni-icons");
@@ -62,15 +63,18 @@ const _sfc_main = {
       handleClickRateClose();
     };
     const handleGoBack = () => {
-      common_vendor.index.navigateBack();
+      common_vendor.index.navigateBack({
+        success: () => {
+        },
+        fail: () => {
+          common_vendor.index.reLaunch({
+            url: "/pages/index/index"
+          });
+        }
+      });
     };
     const storgCatergoryList = common_vendor.index.getStorageSync("storgCatergoryList") || [];
-    catergoryList.value = storgCatergoryList.map((item) => {
-      return {
-        ...item,
-        picurl: item.smallPicurl.replace("_small.webp", ".jpg")
-      };
-    });
+    catergoryList.value = utils_common.changeBigPhoto(storgCatergoryList);
     const handleChangePic = (e) => {
       currentIndex.value = e.detail.current;
       readImgsFun();
@@ -146,8 +150,24 @@ const _sfc_main = {
         common_vendor.index.hideLoading();
       }
     };
-    common_vendor.onLoad((e) => {
+    common_vendor.onShareAppMessage((e) => {
+      return {
+        title: "IWallPaper手机壁纸",
+        path: "/pages/preview/preview?id=" + currentId.value + "&type=share"
+      };
+    });
+    common_vendor.onShareTimeline(() => {
+      return {
+        title: "IWallPaper手机壁纸",
+        query: "id" + currentId.value + "&type=share"
+      };
+    });
+    common_vendor.onLoad(async (e) => {
       let { id = null } = e;
+      if (e.type == "share") {
+        const res = await api_apis.apiDetailWall({ id });
+        catergoryList.value = utils_common.changeBigPhoto(res.data);
+      }
       currentId.value = id;
       currentIndex.value = catergoryList.value.findIndex((item) => item._id === currentId.value);
       currentInfo.value = catergoryList.value[currentIndex.value];
@@ -270,4 +290,5 @@ const _sfc_main = {
     };
   }
 };
+_sfc_main.__runtimeHooks = 6;
 wx.createPage(_sfc_main);

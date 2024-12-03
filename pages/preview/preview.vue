@@ -112,6 +112,9 @@
 							<view class="value" selectable>
 								壁纸均由网络收集，如侵犯了您的版权权益，可以将UUID举报至平台，邮箱2673013887@qq.com,管理员将删除侵犯壁纸，维护您的权益。
 							</view>
+							<view class="safe-area-inset-bottom">
+								
+							</view>
 						</view>
 					</view>
 				</scroll-view>
@@ -147,8 +150,9 @@
 <script setup>
 import { ref } from 'vue';
 import {getStatusBarHeight, getLeftIconLeft} from '@/utils/system.js'
-import {onLoad} from '@dcloudio/uni-app'
-import {apiScore, apiWriteDownload} from '@/api/apis.js'
+import {changeBigPhoto} from '@/utils/common.js'
+import {onLoad, onShareAppMessage,onShareTimeline} from '@dcloudio/uni-app'
+import {apiScore, apiWriteDownload, apiDetailWall} from '@/api/apis.js'
 	// 点击图片隐藏遮罩层
 	const maskState = ref(true)
 	const catergoryList = ref([])
@@ -200,15 +204,19 @@ import {apiScore, apiWriteDownload} from '@/api/apis.js'
 	}
 	// 返回
 	const handleGoBack = () => {
-		uni.navigateBack()
+		uni.navigateBack({
+			success: () => {
+				
+			},
+			fail: () => {
+				uni.reLaunch({
+					url: '/pages/index/index'
+				})
+			}
+		})
 	}
 	const storgCatergoryList =  uni.getStorageSync('storgCatergoryList') || []
-	catergoryList.value = storgCatergoryList.map(item => {
-		return {
-			...item,
-			picurl: item.smallPicurl.replace('_small.webp', '.jpg')
-		}
-	})
+	catergoryList.value = changeBigPhoto(storgCatergoryList)
 	const handleChangePic = (e) => {
 		currentIndex.value = e.detail.current
 		// 滑动换图优化
@@ -300,8 +308,25 @@ import {apiScore, apiWriteDownload} from '@/api/apis.js'
 		}
 		// #endif
 	}
-	onLoad((e) => {
+	
+	onShareAppMessage((e) => {
+		return {
+			title: 'IWallPaper手机壁纸',
+			path: '/pages/preview/preview?id=' + currentId.value + '&type=share'
+		}
+	})
+	onShareTimeline(() => {
+		return {
+			title: 'IWallPaper手机壁纸',
+			query:'id' + currentId.value + '&type=share'
+		}
+	})
+	onLoad(async(e) => {
 		let {id=null} = e
+		if(e.type == 'share') {
+			const res = await apiDetailWall({id})
+			catergoryList.value = changeBigPhoto(res.data)
+		}
 		currentId.value = id
 		currentIndex.value = catergoryList.value.findIndex(item => item._id === currentId.value)
 		currentInfo.value = catergoryList.value[currentIndex.value]

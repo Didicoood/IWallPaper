@@ -41,7 +41,7 @@
 			<view class="content">
 				<scroll-view scroll-x >
 					<view class="box" v-for="(item, index) in randomList" :key="item.classid">
-						<navigator :url="'/pages/preview/preview?id=' + item._id" class="box">
+						<navigator :url="'/pages/preview/preview?id=' + item._id" class="box" @click="goPrevieww">
 						<image :src="item.smallPicurl" mode="aspectFill"></image>
 						</navigator>
 					</view>
@@ -91,6 +91,10 @@ import { apiGetBanner, apiGetDayRandom, apiGetNotice, apiGetCatergory } from '..
 	const getCatergory = async () => {
 		const res = await apiGetCatergory({select: true})
 		catergoryList.value = res.data
+	}
+	// 跳转预览页面
+	const goPrevieww = () => {
+		uni.setStorageSync('storgCatergoryList', randomList.value)
 	}
 	onMounted(() => {
 		getbannerList()

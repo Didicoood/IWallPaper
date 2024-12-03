@@ -1,6 +1,7 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const api_apis = require("../../api/apis.js");
+const utils_common = require("../../utils/common.js");
 if (!Array) {
   const _easycom_uni_load_more2 = common_vendor.resolveComponent("uni-load-more");
   _easycom_uni_load_more2();
@@ -17,6 +18,7 @@ const _sfc_main = {
       pageNum: 1,
       pageSize: 12
     };
+    let pageName;
     const dataFlag = common_vendor.ref(false);
     const getCatergoryList = async () => {
       const res = await api_apis.apiGetCatergoryList(queryParamas);
@@ -27,7 +29,10 @@ const _sfc_main = {
     };
     common_vendor.onLoad((e) => {
       let { id = null, name = null } = e;
+      if (!id)
+        utils_common.gotoHome();
       queryParamas.classid = id;
+      pageName = name;
       common_vendor.index.setNavigationBarTitle({
         title: name
       });
@@ -41,6 +46,21 @@ const _sfc_main = {
     });
     common_vendor.onPullDownRefresh(() => {
       getCatergoryList();
+    });
+    common_vendor.onShareAppMessage((e) => {
+      return {
+        title: "IWallPaper手机壁纸",
+        path: "/pages/catergoryList/catergoryList?id=" + queryParamas.classid + "&name=" + pageName
+      };
+    });
+    common_vendor.onShareTimeline(() => {
+      return {
+        title: "IWallPaper手机壁纸",
+        query: "id" + queryParamas.classid + "&name=" + pageName
+      };
+    });
+    common_vendor.onUnload(() => {
+      common_vendor.index.removeStorageSync("storgCatergoryList");
     });
     return (_ctx, _cache) => {
       return common_vendor.e({
@@ -67,4 +87,5 @@ const _sfc_main = {
   }
 };
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-65898d46"]]);
+_sfc_main.__runtimeHooks = 6;
 wx.createPage(MiniProgramPage);

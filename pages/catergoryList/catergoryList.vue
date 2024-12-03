@@ -19,13 +19,15 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import {onLoad, onReachBottom, onPullDownRefresh} from '@dcloudio/uni-app'
+import {onLoad,onUnload, onReachBottom, onPullDownRefresh, onShareAppMessage,onShareTimeline} from '@dcloudio/uni-app'
 	import {apiGetCatergoryList } from '../../api/apis';
+import { gotoHome } from '../../utils/common';
 	const catergoryList = ref([])
 	const queryParamas = {
 		pageNum: 1,
 		pageSize:12
 	}
+	let pageName
 	const dataFlag = ref(false)
 	const getCatergoryList = async () => {
 		const res = await apiGetCatergoryList(queryParamas)
@@ -36,7 +38,9 @@ import {onLoad, onReachBottom, onPullDownRefresh} from '@dcloudio/uni-app'
 	}
 	onLoad((e) => {
 		let {id=null, name=null} = e
+		if(!id) gotoHome()
 		queryParamas.classid = id
+		pageName = name
 		uni.setNavigationBarTitle({
 			title:name
 		})
@@ -52,6 +56,23 @@ import {onLoad, onReachBottom, onPullDownRefresh} from '@dcloudio/uni-app'
 	onPullDownRefresh(() => {
 		getCatergoryList()
 	})
+	
+	onShareAppMessage((e) => {
+		return {
+			title: 'IWallPaper手机壁纸',
+			path: '/pages/catergoryList/catergoryList?id=' + queryParamas.classid + '&name=' + pageName
+		}
+	})
+	onShareTimeline(() => {
+		return {
+			title: 'IWallPaper手机壁纸',
+			query:'id' + queryParamas.classid + '&name=' + pageName
+		}
+	})
+	onUnload(() =>{
+		uni.removeStorageSync('storgCatergoryList')
+	})
+	
 </script>
 
 <style lang="scss" scoped>

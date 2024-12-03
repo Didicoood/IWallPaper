@@ -40,6 +40,13 @@ function apiWriteDownload(data = {}) {
     data
   });
 }
+function apiDetailWall(data = {}) {
+  return utils_request.request({
+    url: "/detailWall",
+    data
+  });
+}
+exports.apiDetailWall = apiDetailWall;
 exports.apiGetBanner = apiGetBanner;
 exports.apiGetCatergory = apiGetCatergory;
 exports.apiGetCatergoryList = apiGetCatergoryList;

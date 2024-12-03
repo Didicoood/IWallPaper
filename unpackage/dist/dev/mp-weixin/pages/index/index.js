@@ -40,6 +40,9 @@ const _sfc_main = {
       const res = await api_apis.apiGetCatergory({ select: true });
       catergoryList.value = res.data;
     };
+    const goPrevieww = () => {
+      common_vendor.index.setStorageSync("storgCatergoryList", randomList.value);
+    };
     common_vendor.onMounted(() => {
       getbannerList();
       getDayRandom();
@@ -96,7 +99,8 @@ const _sfc_main = {
           return {
             a: item.smallPicurl,
             b: "/pages/preview/preview?id=" + item._id,
-            c: item.classid
+            c: common_vendor.o(goPrevieww, item.classid),
+            d: item.classid
           };
         }),
         i: common_vendor.f(catergoryList.value, (item, index, i0) => {

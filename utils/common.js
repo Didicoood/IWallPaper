@@ -32,3 +32,12 @@ export function gotoHome(){
 		}
 	})
 }
+
+export function changeBigPhoto (e) {
+	return e.map(item => {
+		return {
+			...item,
+			picurl: item.smallPicurl.replace('_small.webp', '.jpg')
+		}
+	})
+}
